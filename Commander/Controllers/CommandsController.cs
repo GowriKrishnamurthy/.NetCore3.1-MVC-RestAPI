@@ -12,9 +12,10 @@ namespace Commander.Controllers
 {
     [Route("api/commands")]
     [ApiController]
+
     public class CommandsController : ControllerBase
     {
-        private readonly MockCommanderRepo _mockCommanderRepo = new MockCommanderRepo();
+        private readonly CommanderRepo _mockCommanderRepo = new CommanderRepo();
 
         // GET: api/commands        
         [HttpGet]

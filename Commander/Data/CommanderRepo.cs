@@ -6,7 +6,7 @@ using Commander.Models;
 
 namespace Commander.Data
 {
-    public class MockCommanderRepo : ICommanderRepo
+    public class CommanderRepo : ICommanderRepo
     {
         public bool SaveChanges()
         {
