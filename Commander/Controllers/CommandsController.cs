@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Commander.Data;
+using Commander.Dtos;
 using Commander.Models;
+using Commander.Profiles;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,10 +18,12 @@ namespace Commander.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ICommanderRepo _commanderRepo;
+        private readonly IMapper _mapper;
 
-        public CommandsController(ICommanderRepo commanderRepo)
+        public CommandsController(ICommanderRepo commanderRepo, IMapper mapper)
         {
             this._commanderRepo = commanderRepo;
+            this._mapper = mapper;
         }
         // GET: api/commands        
         [HttpGet]
@@ -30,16 +35,23 @@ namespace Commander.Controllers
 
         // GET: api/commands/5
         [HttpGet("{id}")]
-        public ActionResult GetCommandById(int id)
-        {
+        public ActionResult <CommandReadDto> GetCommandById(int id)
+        { 
             var commandItem = _commanderRepo.GetCommandById(id);
-            return Ok(commandItem);
+            if (commandItem != null)
+                return Ok(_mapper.Map<CommandReadDto>(commandItem));
+            
+            return NotFound();
         }
 
-        // POST api/commands/5
+        // POST api/commands
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult <CommandReadDto> CreateCommand(CommandCreateDto commandCreateDto)
         {
+            var commandModel = _mapper.Map<Command>(commandCreateDto);
+            _commanderRepo.CreateCommand(commandModel);
+            _commanderRepo.SaveChanges();
+            return Ok(commandModel);
         }
 
         // PUT api/commands/5

@@ -16,7 +16,10 @@ namespace Commander.Data
         }
         public void CreateCommand(Command command)
         {
-            throw new NotImplementedException();
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+
+            _context.Commands.Add(command);
         }
 
         public void DeleteCommand(Command command)
@@ -34,9 +37,9 @@ namespace Commander.Data
             return _context.Commands.FirstOrDefault(p => p.Id == id);
         }
 
-        public bool SaveChanges()
+        public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
         public void UpdateCommand(Command command)

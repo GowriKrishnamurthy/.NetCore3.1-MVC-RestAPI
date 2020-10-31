@@ -8,7 +8,7 @@ namespace Commander.Data
 {
     public class CommanderRepo : ICommanderRepo
     {
-        public bool SaveChanges()
+        public void SaveChanges()
         {
             throw new NotImplementedException();
         }
