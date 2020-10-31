@@ -7,7 +7,6 @@ using Commander.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Commander.Controllers
 {
     [Route("api/commands")]
@@ -15,13 +14,17 @@ namespace Commander.Controllers
 
     public class CommandsController : ControllerBase
     {
-        private readonly CommanderRepo _mockCommanderRepo = new CommanderRepo();
+        private readonly ICommanderRepo _commanderRepo;
 
+        public CommandsController(ICommanderRepo commanderRepo)
+        {
+            this._commanderRepo = commanderRepo;
+        }
         // GET: api/commands        
         [HttpGet]
-        public ActionResult <IEnumerable<Command>> GetCommands()
+        public ActionResult <IEnumerable<Command>> GetAllCommands()
         {
-            var commandItems = _mockCommanderRepo.GetAllCommands();
+            var commandItems = _commanderRepo.GetAllCommands();
             return Ok(commandItems);
         }
 
@@ -29,7 +32,7 @@ namespace Commander.Controllers
         [HttpGet("{id}")]
         public ActionResult GetCommandById(int id)
         {
-            var commandItem = _mockCommanderRepo.GetCommandById(id);
+            var commandItem = _commanderRepo.GetCommandById(id);
             return Ok(commandItem);
         }
 
