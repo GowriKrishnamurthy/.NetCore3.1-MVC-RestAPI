@@ -13,8 +13,8 @@ namespace Commander.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HowTo = table.Column<string>(maxLength: 250, nullable: false),
-                    Platform = table.Column<string>(nullable: false),
-                    CommandLine = table.Column<string>(nullable: false)
+                    CommandLine = table.Column<string>(nullable: false),
+                    Platform = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
