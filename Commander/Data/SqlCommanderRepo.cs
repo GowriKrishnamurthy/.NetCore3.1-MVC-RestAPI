@@ -24,7 +24,7 @@ namespace Commander.Data
 
         public void DeleteCommand(Command command)
         {
-            throw new NotImplementedException();
+            _context.Remove(command);
         }
 
         public IEnumerable<Command> GetAllCommands()
@@ -44,7 +44,7 @@ namespace Commander.Data
 
         public void UpdateCommand(Command command)
         {
-            throw new NotImplementedException();
+            _context.Commands.Update(command);
         }
     }
 }

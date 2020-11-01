@@ -61,14 +61,33 @@ namespace Commander.Controllers
 
         // PUT api/commands/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
         {
+            var commandModelFromRepository = _commanderRepo.GetCommandById(id);
+            if (commandModelFromRepository != null)
+            {
+                _mapper.Map(commandUpdateDto, commandModelFromRepository);
+                _commanderRepo.UpdateCommand(commandModelFromRepository);
+                _commanderRepo.SaveChanges();
+                return NoContent();
+            }
+
+            return NotFound();
         }
 
         // DELETE api/commands/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            var commandModelFromRepository = _commanderRepo.GetCommandById(id);
+            if (commandModelFromRepository != null)
+            {
+                _commanderRepo.DeleteCommand(commandModelFromRepository);
+                _commanderRepo.SaveChanges();
+                return NoContent();
+            }
+
+            return NotFound();
         }
     }
 }
