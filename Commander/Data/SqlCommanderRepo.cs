@@ -37,6 +37,11 @@ namespace Commander.Data
             return _context.Commands.FirstOrDefault(p => p.Id == id);
         }
 
+        public void PatchCommand(Command command)
+        {
+            _context.Commands.Update(command);
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

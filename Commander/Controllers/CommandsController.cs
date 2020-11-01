@@ -7,6 +7,7 @@ using Commander.Data;
 using Commander.Dtos;
 using Commander.Models;
 using Commander.Profiles;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -77,12 +78,34 @@ namespace Commander.Controllers
 
         // DELETE api/commands/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteCommand(int id)
         {
             var commandModelFromRepository = _commanderRepo.GetCommandById(id);
             if (commandModelFromRepository != null)
             {
                 _commanderRepo.DeleteCommand(commandModelFromRepository);
+                _commanderRepo.SaveChanges();
+                return NoContent();
+            }
+
+            return NotFound();
+        }
+
+        // PATCH api/commands/5
+        [HttpPatch("{id}")]
+        public ActionResult ParticalCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDocument)
+        {
+            var commandModelFromRepository = _commanderRepo.GetCommandById(id);
+            if (commandModelFromRepository != null)
+            {
+                var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepository);
+                patchDocument.ApplyTo(commandToPatch,ModelState);
+
+                if(!TryValidateModel(commandToPatch))
+                {
+                    return ValidationProblem(ModelState);
+                }
+                _mapper.Map(commandToPatch, commandModelFromRepository);
                 _commanderRepo.SaveChanges();
                 return NoContent();
             }

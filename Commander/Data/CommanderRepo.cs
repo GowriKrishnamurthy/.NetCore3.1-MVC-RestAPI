@@ -44,5 +44,10 @@ namespace Commander.Data
         {
             throw new NotImplementedException();
         }
+
+        public void PatchCommand(Command command)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
